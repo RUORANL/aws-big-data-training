@@ -1,4 +1,10 @@
 baseURL = 'http://hugo-quickstart-template.netlify.com'
 languageCode = 'en-us'
-title = 'Netlify + Hugo Quickstart'
-theme = 'netlify-basic'
+title = 'AWS Big Data Training Labs'
+theme = 'hugo-book'
+
+[menu]
+[[menu.after]]
+  name = "Labs"
+  identifier = "labs"
+  pageRef = "/"
