@@ -1,10 +1,235 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Netlify &#43; Hugo Quickstart</title>
+    <title>AWS Big Data Training Labs</title>
     <link>http://hugo-quickstart-template.netlify.com/</link>
-    <description>Recent content on Netlify &#43; Hugo Quickstart</description>
+    <description>Recent content on AWS Big Data Training Labs</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="http://hugo-quickstart-template.netlify.com/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Sat, 12 Aug 2023 20:08:25 +0800</lastBuildDate><atom:link href="http://hugo-quickstart-template.netlify.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>实验1-1 - 创建资源</title>
+      <link>http://hugo-quickstart-template.netlify.com/labs/log-analytics-with-kinesis-and-athena/1-preparing-the-environment/</link>
+      <pubDate>Sat, 12 Aug 2023 20:08:25 +0800</pubDate>
+      
+      <guid>http://hugo-quickstart-template.netlify.com/labs/log-analytics-with-kinesis-and-athena/1-preparing-the-environment/</guid>
+      <description>实验1-1 - 使用CloudFormation创建实验资源 # 点击下方的“启动堆栈”以启动Cloudformation堆栈创建，然后如下图所示点击“下一步”。
+启动堆栈 在堆栈详情页面，保持所有默认设置，再次点击“下一步”。
+向下滚动，在堆栈选项页面上不做任何更改，点击“下一步”。
+最后，在审查页面上，检查底部的确认框并点击“创建堆栈”。
+堆栈创建将需要大约5分钟才能完成。
+之后，您应该会看到如下显示。首先，它会显示“创建进行中(CREATE_IN_PROGRESS)”，然后最后变为“创建完成(CREATE_COMPLETE)”。
+一旦堆栈创建完成，请转到“输出”选项卡并记下由Cloudformation创建的Firehose Delivery和S3 bucket资源。</description>
+    </item>
+    
+    <item>
+      <title>实验1-2 - 部署Kinesis Data Generator</title>
+      <link>http://hugo-quickstart-template.netlify.com/labs/log-analytics-with-kinesis-and-athena/2-deploy-data-generator/</link>
+      <pubDate>Sat, 12 Aug 2023 20:08:25 +0800</pubDate>
+      
+      <guid>http://hugo-quickstart-template.netlify.com/labs/log-analytics-with-kinesis-and-athena/2-deploy-data-generator/</guid>
+      <description> 实验1-2 - 使用CloudFormation创建Kinesis Data Generator # 点击下方的“启动堆栈”以启动Cloudformation堆栈创建，然后如下图所示点击“下一步”。
+启动堆栈 </description>
+    </item>
+    
+    <item>
+      <title>实验1-3 - 生成Access Log数据并发送到Kinesis</title>
+      <link>http://hugo-quickstart-template.netlify.com/labs/log-analytics-with-kinesis-and-athena/3-send-apache-access-logs-to-kinesis/</link>
+      <pubDate>Sat, 12 Aug 2023 20:08:25 +0800</pubDate>
+      
+      <guid>http://hugo-quickstart-template.netlify.com/labs/log-analytics-with-kinesis-and-athena/3-send-apache-access-logs-to-kinesis/</guid>
+      <description>实验1-3 - 生成Access Log数据并发送到Kinesis # 概述 # 在本节中，您将使用Kinesis Data Generator向在前一节中创建的Kinesis Data Stream和Firehose发送模拟的访问日志数据。传输流将将传入的日志条目写入S3，不做任何格式更改。
+前提条件 # 已经成功部署实验资源和Kinesis Data Generator。
+登录到Kinesis Data Generator # Kinesis Data Generator (KDG)已在设置过程中配置到您的帐户上。我们需要检索应用程序的链接和凭据以获得访问权限。通过在AWS控制台顶部的服务搜索框中键入CloudFormation来打开CloudFormation控制台，或点击此链接到CloudFormation控制台。一旦打开，如果您在自己的帐户中工作，选择firehose-immersion-day，或者如果您在AWS活动中，选择以mod-开头的堆栈名称。
+CloudFormation 控制台
+在堆栈详情中，点击输出选项卡。复制KinesisDataGeneratorUrl、UserName和Password的值列，并为下一步保留它们。
+堆栈输出
+使用上一步中的用户名和密码登录到KDG。选择您的区域，并确认您可以看到您上面创建的Kinesis Firehose传输流和Kinesis数据流。
+我们将使用参数化模板定义模拟数据的结构。将以下模板复制并粘贴到模板选项卡中：
+{{internet.ip}} - {{name.firstName}} [{{date.now(&amp;#34;DD/MMM/YYYY:HH:mm:ss ZZ&amp;#34;)}}] &amp;#34;{{random.weightedArrayElement({&amp;#34;weights&amp;#34;:[0.6,0.1,0.1,0.2],&amp;#34;data&amp;#34;:[&amp;#34;GET&amp;#34;,&amp;#34;POST&amp;#34;,&amp;#34;DELETE&amp;#34;,&amp;#34;PUT&amp;#34;]})}} {{random.arrayElement([&amp;#34;/list&amp;#34;,&amp;#34;/wp-content&amp;#34;,&amp;#34;/wp-admin&amp;#34;,&amp;#34;/explore&amp;#34;,&amp;#34;/search/tag/list&amp;#34;,&amp;#34;/app/main/posts&amp;#34;,&amp;#34;/posts/posts/explore&amp;#34;])}}&amp;#34; {{random.weightedArrayElement({&amp;#34;weights&amp;#34;: [0.9,0.04,0.02,0.04], &amp;#34;data&amp;#34;:[&amp;#34;200&amp;#34;,&amp;#34;404&amp;#34;,&amp;#34;500&amp;#34;,&amp;#34;301&amp;#34;]})}} {{random.number(10000)}} 每条记录都会是随机的。点击测试模板以生成一些记录。
+使用Kinesis Data Generator发送数据 # 点击关闭，然后选择发送数据，从Kinesis Data Generator工具发送实时流数据到Kinesis Firehose - Direct Put。运行发送1000-2000条记录，然后点击停止发送数据到Kinesis。
+点击关闭，然后选择发送数据，从Kinesis Data Generator工具发送实时流数据到Kinesis Data Stream。运行发送1000-2000条记录，然后点击停止发送数据到Kinesis。
+等待2-3分钟，Firehose将数据发送到S3存储桶。
+导航到 S3 控制台查看结果 # 选择在前一节中创建的以access-logs-direct-put-tsv为前缀的S3存储桶。您将在access-logs-direct-put-tsv/yyyy/mm/dd/hh目录结构下看到Direct Put创建的数据。
+选择在前一节中创建的以access-logs-data-stream-tsv为前缀的S3存储桶。您将在access-logs-data-stream-tsv/yyyy/mm/dd/hh目录结构下看到通过Data Stream创建的数据。</description>
+    </item>
+    
+    <item>
+      <title>实验1-4 - 使用Amazon Athena分析数据</title>
+      <link>http://hugo-quickstart-template.netlify.com/labs/log-analytics-with-kinesis-and-athena/4-analyze-data-using-amazon-athena/</link>
+      <pubDate>Sat, 12 Aug 2023 20:08:25 +0800</pubDate>
+      
+      <guid>http://hugo-quickstart-template.netlify.com/labs/log-analytics-with-kinesis-and-athena/4-analyze-data-using-amazon-athena/</guid>
+      <description>实验1-4 - 使用Amazon Athena分析数据 # 概述 # Amazon Athena是一个交互式查询服务，可以轻松地使用标准SQL直接在Amazon Simple Storage Service (Amazon S3)中分析数据。在AWS管理控制台中进行几个操作，您就可以将Athena指向存储在Amazon S3中的数据，并开始使用标准SQL运行临时查询，并在几秒钟内获得结果。在这个模块中，我们将在访问日志数据上创建Amazon Athena表。
+Amazon Athena设置 # 在使用Amazon Athena查询表之前，您需要在Amazon S3中配置查询结果位置。
+打开Athena控制台：Athena Console
+选择&amp;quot;Explore the query editor&amp;quot;以打开查询编辑器。
+选择“Edit Settings”以在Amazon S3中设置查询结果位置。
+在“Settings”选项卡上，选择“Manage”。
+在“Manage Settings”屏幕上，选择“Browse S3”，选择您创建的Amazon S3桶（例如：access-logs-tsv-{aws_account-id}，然后点击“Choose”，将&amp;quot;/athena-results&amp;quot;作为桶的文件夹名添加，然后点击“save”。
+创建Amazon Athena表 # 切换到Athena Query Editor。
+复制以下的创建表语句，并粘贴到查询编辑器中。用您的S3桶名称（例如：access-logs-tsv-xxxxxxxxxxxxx）替换bucket-name，然后点击“Run”以创建表。
+注意：使用在本实验室环境准备部分创建的S3桶名称替换bucket-name。
+CREATE EXTERNAL TABLE apache_logs( client_ip string, client_id string, user_id string, request_received_time string, client_request string, server_status string, returned_obj_size string ) ROW FORMAT SERDE &amp;#39;com.amazonaws.glue.serde.GrokSerDe&amp;#39; WITH SERDEPROPERTIES ( &amp;#39;input.</description>
+    </item>
+    
+    <item>
+      <title>实验2-1 - 上传测试数据到S3</title>
+      <link>http://hugo-quickstart-template.netlify.com/labs/billing-data-analytics-solution-with-glue-and-athena/1-preparing-the-environment/</link>
+      <pubDate>Sat, 12 Aug 2023 20:08:25 +0800</pubDate>
+      
+      <guid>http://hugo-quickstart-template.netlify.com/labs/billing-data-analytics-solution-with-glue-and-athena/1-preparing-the-environment/</guid>
+      <description>实验2-1 - 上传测试数据到S3 # Follow the Amazon Simple Storage Service documentation page to create an S3 bucket Select your new S3 bucket and click the Create folder button, enter cur for your folder name, and click Create folder Click on your new cur folder to enter it, and follow the same process to create further folders until you have a folder structure which resembles (bucket name)/cur/WorkshopCUR/WorkshopCUR/year=2018 Then create three further folders within the year=2018 folder (month=10, month=11, month=12) Download the three parquet files below October 2018 Usage November 2018 Usage December 2018 Usage Upload each months file into the corresponding folder, (so upload October’s parquet file to (bucket name)/cur/WorkshopCUR/WorkshopCUR/year=2018/month=10/</description>
+    </item>
+    
+    <item>
+      <title>实验2-2 - 创建并运行Glue爬虫以填充Glue数据目录</title>
+      <link>http://hugo-quickstart-template.netlify.com/labs/billing-data-analytics-solution-with-glue-and-athena/2-create-glue-crawler-to-populate-data-catalog/</link>
+      <pubDate>Sat, 12 Aug 2023 20:08:25 +0800</pubDate>
+      
+      <guid>http://hugo-quickstart-template.netlify.com/labs/billing-data-analytics-solution-with-glue-and-athena/2-create-glue-crawler-to-populate-data-catalog/</guid>
+      <description> 实验2-2 - 创建并运行Glue爬虫以填充Glue数据目录 # </description>
+    </item>
+    
+    <item>
+      <title>实验3-1 - 部署Redshift集群</title>
+      <link>http://hugo-quickstart-template.netlify.com/labs/redshift-cluster-setup-and-data-ingestion/1-preparing-the-environment/</link>
+      <pubDate>Sat, 12 Aug 2023 20:08:25 +0800</pubDate>
+      
+      <guid>http://hugo-quickstart-template.netlify.com/labs/redshift-cluster-setup-and-data-ingestion/1-preparing-the-environment/</guid>
+      <description>实验3-1 - 部署Redshift集群 # 步骤1 - 创建堆栈 # 点击下方的“启动堆栈”以启动Cloudformation堆栈创建，然后如下图所示点击“下一步”。
+启动堆栈 在堆栈详情页面，保持所有默认设置，再次点击“下一步”。
+向下滚动，在堆栈选项页面上不做任何更改，点击“下一步”。
+最后，在审查页面上，检查底部的确认框并点击“创建堆栈”。
+堆栈创建将需要大约5分钟才能完成。
+之后，您应该会看到如下显示。首先，它会显示“创建进行中(CREATE_IN_PROGRESS)”，然后最后变为“创建完成(CREATE_COMPLETE)”。
+步骤2 - 查看堆栈输出信息 # 一旦堆栈创建完成，请转到“输出”选项卡并记下由Cloudformation创建的Firehose Delivery和S3 bucket资源。</description>
+    </item>
+    
+    <item>
+      <title>实验3-2 - 配置客户端工具</title>
+      <link>http://hugo-quickstart-template.netlify.com/labs/redshift-cluster-setup-and-data-ingestion/2-configure-client-tool-query-editor-v2/</link>
+      <pubDate>Sat, 12 Aug 2023 20:08:25 +0800</pubDate>
+      
+      <guid>http://hugo-quickstart-template.netlify.com/labs/redshift-cluster-setup-and-data-ingestion/2-configure-client-tool-query-editor-v2/</guid>
+      <description> 实验3-2 - 配置客户端工具 - Query Editor V2 # 步骤1 - 配置查询编辑器V2 # 一旦您获得了具有所需资源的账户访问权限，让我们验证您是否可以连接到Redshift环境。这些实验室使用基于网络的Redshift Query Editor v2。请导航到 Query editor v2。
+如果遇到如下提示，您可能需要配置Query Editor V2。
+在左侧，点击您想要连接的Redshift环境。
+一个弹出窗口应该已经打开。尝试选择Serverless端点（workgroup-xxxxxxxxxxxx）或Provisioned集群（redshift-provisioned-xxxxxxxxxxxx。 输入数据库名称和用户名。点击连接。
+用户名: awsuser
+密码: Awsuser123
+步骤2 - 运行示例查询 # 运行以下查询，列出redshift集群中的用户。
+select * from pg_user; </description>
+    </item>
+    
+    <item>
+      <title>实验3-3 - 加载数据到Redshift</title>
+      <link>http://hugo-quickstart-template.netlify.com/labs/redshift-cluster-setup-and-data-ingestion/3-redshift-data-ingestion-from-kdf/</link>
+      <pubDate>Sat, 12 Aug 2023 20:08:25 +0800</pubDate>
+      
+      <guid>http://hugo-quickstart-template.netlify.com/labs/redshift-cluster-setup-and-data-ingestion/3-redshift-data-ingestion-from-kdf/</guid>
+      <description>实验3-3 - 加载数据到Redshift # 开始之前 # 请确认以下实验资源已经部署完成：
+Redshift Serverless Endpoint Redshift Provisioned Cluster 我们将在此实验室中使用Amazon Redshift QueryEditorV2。
+步骤1 - 创建表 # Amazon Redshift是一个遵循ANSI SQL的数据仓库。您可以使用熟悉的CREATE TABLE语句来创建表。
+以下是表的数据模型。 接下来我们从TPC基准数据模型创建8个表，请复制以下的创建表语句并运行它们。
+DROP TABLE IF EXISTS partsupp; DROP TABLE IF EXISTS lineitem; DROP TABLE IF EXISTS supplier; DROP TABLE IF EXISTS part; DROP TABLE IF EXISTS orders; DROP TABLE IF EXISTS customer; DROP TABLE IF EXISTS nation; DROP TABLE IF EXISTS region; CREATE TABLE region ( R_REGIONKEY bigint NOT NULL, R_NAME varchar(25), R_COMMENT varchar(152)) diststyle all; CREATE TABLE nation ( N_NATIONKEY bigint NOT NULL, N_NAME varchar(25), N_REGIONKEY bigint, N_COMMENT varchar(152)) diststyle all; create table customer ( C_CUSTKEY bigint NOT NULL, C_NAME varchar(25), C_ADDRESS varchar(40), C_NATIONKEY bigint, C_PHONE varchar(15), C_ACCTBAL decimal(18,4), C_MKTSEGMENT varchar(10), C_COMMENT varchar(117)) diststyle all; create table orders ( O_ORDERKEY bigint NOT NULL, O_CUSTKEY bigint, O_ORDERSTATUS varchar(1), O_TOTALPRICE decimal(18,4), O_ORDERDATE Date, O_ORDERPRIORITY varchar(15), O_CLERK varchar(15), O_SHIPPRIORITY Integer, O_COMMENT varchar(79)) distkey (O_ORDERKEY) sortkey (O_ORDERDATE); create table part ( P_PARTKEY bigint NOT NULL, P_NAME varchar(55), P_MFGR varchar(25), P_BRAND varchar(10), P_TYPE varchar(25), P_SIZE integer, P_CONTAINER varchar(10), P_RETAILPRICE decimal(18,4), P_COMMENT varchar(23)) diststyle all; create table supplier ( S_SUPPKEY bigint NOT NULL, S_NAME varchar(25), S_ADDRESS varchar(40), S_NATIONKEY bigint, S_PHONE varchar(15), S_ACCTBAL decimal(18,4), S_COMMENT varchar(101)) diststyle all; create table lineitem ( L_ORDERKEY bigint NOT NULL, L_PARTKEY bigint, L_SUPPKEY bigint, L_LINENUMBER integer NOT NULL, L_QUANTITY decimal(18,4), L_EXTENDEDPRICE decimal(18,4), L_DISCOUNT decimal(18,4), L_TAX decimal(18,4), L_RETURNFLAG varchar(1), L_LINESTATUS varchar(1), L_SHIPDATE date, L_COMMITDATE date, L_RECEIPTDATE date, L_SHIPINSTRUCT varchar(25), L_SHIPMODE varchar(10), L_COMMENT varchar(44)) distkey (L_ORDERKEY) sortkey (L_RECEIPTDATE); create table partsupp ( PS_PARTKEY bigint NOT NULL, PS_SUPPKEY bigint NOT NULL, PS_AVAILQTY integer, PS_SUPPLYCOST decimal(18,4), PS_COMMENT varchar(199)) diststyle even; 步骤2 - 从S3加载数据 # COPY 命令能够有效地从Amazon S3加载大量数据到Amazon Redshift中。单个 COPY 命令可以从多个文件加载到一个表中。它会自动并行加载您提供的S3位置中所有文件的数据。</description>
+    </item>
+    
+    <item>
+      <title>实验4-1 - 启用并配置Amazon QuickSight</title>
+      <link>http://hugo-quickstart-template.netlify.com/labs/data-visualization-with-aws-quicksight/1-setup-amazon-quicksight/</link>
+      <pubDate>Sat, 12 Aug 2023 20:08:25 +0800</pubDate>
+      
+      <guid>http://hugo-quickstart-template.netlify.com/labs/data-visualization-with-aws-quicksight/1-setup-amazon-quicksight/</guid>
+      <description> 实验4-1 - 启用并配置Amazon QuickSight # </description>
+    </item>
+    
+    <item>
+      <title>实验4-2 - 调整数据集</title>
+      <link>http://hugo-quickstart-template.netlify.com/labs/data-visualization-with-aws-quicksight/2-create-prepared-dataset/</link>
+      <pubDate>Sat, 12 Aug 2023 20:08:25 +0800</pubDate>
+      
+      <guid>http://hugo-quickstart-template.netlify.com/labs/data-visualization-with-aws-quicksight/2-create-prepared-dataset/</guid>
+      <description>实验4-2 - 调整数据集 # 使用以下步骤准备市场营销数据集并创建分析 # 如果您在Amazon QuickSight中没有看到Web和Social Media Analytics样本数据，您可以下载它：web-and-social-analytics.csv.zip。
+为市场营销数据集准备并创建分析 # 在Amazon QuickSight起始页，左侧选择 数据集。 在 数据集 页面，点击 新建数据集。 在从现有数据源部分的 创建数据集 页面，选择 Web and Social Media Analytics Amazon S3数据源，然后选择 编辑数据集。
+对于数据集名称，输入 市场营销样本 来替换数据集名称中的 Web and Social Media Analytics。 从数据集中排除一些字段。
+在 字段 面板中，选择 Twitter followers cumulative 和 Mailing list cumulative 字段的字段菜单，然后选择 排除字段。若要一次选择多个字段，请按住Ctrl键进行选择（Mac上的Command键）。 重命名字段。
+在 数据集预览 面板中，滚动到 Website Pageviews 字段并选择编辑图标。 在打开的 编辑字段 页面中，对于 名称，输入 网站页面浏览量，然后点击 应用。
+添加一个计算字段，该字段将 Events 字段中的任何0长度字符串值替换为文本字符串：
+在数据准备页面，滚动到 字段 面板的顶部，然后点击 添加计算字段。 在打开的 添加计算字段 页面中，对于 添加名称，输入 populated_event。</description>
+    </item>
+    
+    <item>
+      <title>实验4-3 - 创建分析</title>
+      <link>http://hugo-quickstart-template.netlify.com/labs/data-visualization-with-aws-quicksight/3-create-analysis/</link>
+      <pubDate>Sat, 12 Aug 2023 20:08:25 +0800</pubDate>
+      
+      <guid>http://hugo-quickstart-template.netlify.com/labs/data-visualization-with-aws-quicksight/3-create-analysis/</guid>
+      <description> 实验4-3 - 创建分析 # 请按照以下步骤创建您的分析。
+创建分析 # 在Amazon QuickSight起始页，选择 新建分析。 在 数据集 页面，选择 Business Review 样本数据集，然后选择 创建分析。 使用AutoGraph创建可视化 # 默认情况下选择AutoGraph来创建一个可视化。
+在分析页面中，在 字段列表 面板选择 Date 和 Return visitors。 Amazon QuickSight使用这些数据创建一个折线图。 创建散点图可视化 # 选择一个可视化类型并将字段拖到字段窗口以创建可视化。
+创建散点图可视化 # 在分析页面上，选择 添加，然后在应用栏上选择 添加可视化。这将默认创建一个新的空白可视化，并选择AutoGraph。 在 可视化类型 面板中，选择散点图图标。 在 字段列表 面板中选择字段添加到 字段窗口 面板：
+选择 Desktop Uniques 填充X轴字段窗口。 选择 Mobile Uniques 填充Y轴字段窗口。 选择 Date 填充 Group/Color 字段窗口。 使用这些字段创建一个散点图。 </description>
+    </item>
+    
+    <item>
+      <title>实验4-4 - 修改可视化组件</title>
+      <link>http://hugo-quickstart-template.netlify.com/labs/data-visualization-with-aws-quicksight/4-modify-visuals/</link>
+      <pubDate>Sat, 12 Aug 2023 20:08:25 +0800</pubDate>
+      
+      <guid>http://hugo-quickstart-template.netlify.com/labs/data-visualization-with-aws-quicksight/4-modify-visuals/</guid>
+      <description> 实验4-4 - 修改可视化组件 # 请按照以下程序修改您使用“教程：创建Amazon QuickSight分析”中的程序创建的可视化。
+修改折线图可视化 # 通过使其按日期显示额外的度量（measure）并更改图表颜色来修改折线图可视化。
+要修改您的折线图可视化： # 在分析中，选择折线图可视化。
+向可视化添加另一个度量（measure）。 在 字段列表 面板中选择 New visitors SEO 字段。此度量（measure）被添加到值字段窗口中，折线图用一条线来表示它进行更新。可视化标题也进行了更新。
+更改用于表示 Return visitors 度量的线的颜色。 选择代表 Return visitors 的图表上的线。为此，选择线的末端，而不是线的中间。 选择 Color Return visitors，然后从颜色选择器中选择红色图标。 在X轴字段窗口中选择 Date 字段，选择 Aggregate，然后选择 Month。 修改散点图可视化 # 通过更改数据的粒度来修改散点图可视化。
+要修改您的散点图可视化： # 在分析中，选择散点图可视化。
+选择 Group/Color 字段窗口，选择 Aggregate，然后选择 Month。
+散点图会更新以按月而不是按默认的按年显示测量值。
+通过更改可视化布局和添加过滤器来修改两个可视化 # 通过更改可视化的大小和位置以及添加过滤器并将其应用于两者来修改两个可视化。
+更改可视化布局 # 通过更改可视化的大小和位置来修改两个可视化。
+要修改两个可视化： # 在您的分析中，选择折线图可视化。 选择可视化右下角的调整大小手柄并向上和向左拖动，直到可视化在水平和垂直方向上都缩小到原来的一半大小。 重复此步骤对散点图可视化操作。 选择散点图可视化上的移动手柄，并将其拖动到折线图可视化的右侧，使它们并排显示。 通过添加过滤器来修改两个可视化 # 通过添加过滤器并将其应用于两者来修改两个可视化。
+要将过滤器添加到两个可视化中： # 在分析中，选择散点图可视化。 在左侧选择 Filter。 在 Filters 面板上，选择加号图标，然后选择要进行过滤的 Date 字段。 选择新过滤器以展开它。 在 Edit filter 面板中，对于 Filter type，选择 After 比较类型。 输入一个开始日期值为1/1/2014。 选择 Date，为年份选择2014，为月份选择January，然后在日历上选择1。 在 Edit filter 面板中，选择 Apply 将过滤器应用于可视化。 过滤器被应用于散点图可视化。这是在可视化下拉菜单上用一个过滤器图标表示的。 将过滤器应用于折线图可视化。 在左侧的 Filter 面板中，再次选择 Date 过滤器，选择 Only this visual，然后选择 All visuals of this dataset。 过滤器也应用于折线图可视化。 </description>
+    </item>
+    
+    <item>
+      <title>实验4-5 - 创建数据仪表盘</title>
+      <link>http://hugo-quickstart-template.netlify.com/labs/data-visualization-with-aws-quicksight/5-create-dashboard/</link>
+      <pubDate>Sat, 12 Aug 2023 20:08:25 +0800</pubDate>
+      
+      <guid>http://hugo-quickstart-template.netlify.com/labs/data-visualization-with-aws-quicksight/5-create-dashboard/</guid>
+      <description> 实验4-5 - 创建数据仪表盘 # 请按照以下程序从您使用上一步创建的分析中创建一个仪表板。
+要从您的分析创建仪表板： # 在您的分析中，选择右上角应用栏中的 Share，然后选择 Publish dashboard。 在打开的 Publish dashboard 页面中，选择 Publish new dashboard as，并输入名称 Marketing Dashboard。 选择 Publish dashboard。仪表板现已发布。 在打开的 Share dashboard 页面上，选择 X 图标以关闭它。您可以稍后在仪表板页面上使用共享选项共享仪表板。 </description>
+    </item>
+    
+    <item>
+      <title>实验5-1 - 创建并运行Glue爬虫以填充Glue数据目录</title>
+      <link>http://hugo-quickstart-template.netlify.com/labs/query-data-lake-directly-with-glue-and-redshift/1-preparing-the-environment/</link>
+      <pubDate>Sat, 12 Aug 2023 20:08:25 +0800</pubDate>
+      
+      <guid>http://hugo-quickstart-template.netlify.com/labs/query-data-lake-directly-with-glue-and-redshift/1-preparing-the-environment/</guid>
+      <description> 实验5-1 - 创建并运行Glue爬虫以填充Glue数据目录 # 在此实验室部分，我们将执行以下活动：
+使用Redshift Spectrum为S3上的历史数据创建外部DB。 内省历史数据，可能以新颖的方式汇总数据，以查看随着时间或其他维度的趋势。 注意分区方案是年、月、类型（其中类型是出租车公司）。这是一个截图。
+创建Redshift Spectrum的外部Schema和Database # 您可以在Amazon Redshift、AWS Glue、Amazon Athena或Apache Hive元数据存储中创建一个外部表。如果您的外部表在AWS Glue、Athena或Hive元数据存储中定义，您首先创建一个引用外部数据库的外部模式。然后，您可以通过在表名前加上模式名来在SELECT语句中引用外部表，而不需要在Amazon Redshift中创建表。
+在此实验室中，您将使用AWS Glue Crawler在s3://us-west-2.serverless-analytics/canonical/NY-Pub/ 下创建存储在parquet格式中的外部表adb305.ny_pub。
+导航到Glue爬虫页面。 us-east-1地区 - 链接
+us-west-2地区 - 链接
+点击创建爬虫，输入爬虫名NYTaxiCrawler并点击下一步。 点击添加数据源。 选择S3作为数据存储，选择在另一个账户中并输入S3文件路径s3://redshift-demos/data/NY-Pub(对于us-east-1)和s3://us-west-2.serverless-analytics/canonical/NY-Pub(对于us-west-2)。点击添加S3数据源。 为爬虫选择S3作为数据源并点击下一步。 点击创建新的IAM角色并点击下一步。 输入AWSGlueServiceRole-RedshiftImmersion并点击创建。 点击添加数据库并输入名字spectrumdb。 返回到Glue控制台，刷新目标数据库并选择spectrumdb。 选择所有剩余的默认值并点击创建爬虫。选择爬虫-NYTaxiCrawler并点击运行。 完成爬虫运行后，您可以在Glue目录中看到一个新表ny_pub。 </description>
+    </item>
+    
+    <item>
+      <title>实验5-2 - 创建外部Schema并查询Glue Data Catalog中的表</title>
+      <link>http://hugo-quickstart-template.netlify.com/labs/query-data-lake-directly-with-glue-and-redshift/2-query-with-redshift-serverless/</link>
+      <pubDate>Sat, 12 Aug 2023 20:08:25 +0800</pubDate>
+      
+      <guid>http://hugo-quickstart-template.netlify.com/labs/query-data-lake-directly-with-glue-and-redshift/2-query-with-redshift-serverless/</guid>
+      <description>实验5-2 - 创建外部Schema并查询Glue Data Catalog中的表 # 使用Query Editor V2 # 点击控制台左侧的Serverless仪表板菜单项。点击先前配置的名称空间。点击查询数据。
+创建外部Schema # 在Glue目录数据库spectrumdb中创建指向adb305的外部Schema。
+CREATE external SCHEMA adb305 FROM data catalog DATABASE &amp;#39;spectrumdb&amp;#39; IAM_ROLE default CREATE external DATABASE if not exists; 对数据表进行查询，确定暴风雪的日期 # 您可以从Redshift外部模式中查询在Glue目录中定义的表ny_pub。在2016年1月，由于暴风雪，某一天的出租车行程数量最少。你能找到那一天吗？
+SELECT TO_CHAR(pickup_datetime, &amp;#39;YYYY-MM-DD&amp;#39;),COUNT(*) FROM adb305.ny_pub WHERE YEAR = 2016 and Month = 01 GROUP BY 1 ORDER BY 2; 创建内部Schema workshop_das # 为将存放在Redshift托管存储上的表创建一个Schema workshop_das。
+CREATE SCHEMA workshop_das; 通过CTAS创建内部表 # 通过从外部表选择来运行CTAS以创建并加载Redshift表workshop_das.taxi_201601 为2016年1月的绿色出租车公司创建表workshop_das.taxi_201601以加载数据。
+CREATE TABLE workshop_das.taxi_201601 AS SELECT * FROM adb305.</description>
+    </item>
+    
   </channel>
 </rss>
