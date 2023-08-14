@@ -10,3 +10,5 @@ menu:
     identifier: redshift-cluster-setup-and-data-ingestion
 ---
 ## 部署Redshift集群并导入数据
+
+### 架构图
