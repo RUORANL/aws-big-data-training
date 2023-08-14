@@ -14,7 +14,7 @@ menu:
 
 ### 步骤1 - 创建堆栈
 点击下方的“启动堆栈”以启动Cloudformation堆栈创建，然后如下图所示点击“下一步”。  
-{{< button href="https://github.com/alex-shpak/hugo-book" >}}启动堆栈{{< /button >}}    
+{{< button href="https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=KinesisLab&templateURL=https://big-data-training-cfn-templates.s3.amazonaws.com/SetupLabRedshift.yaml" >}}启动堆栈{{< /button >}}    
 
 ![图片描述：创建堆栈](/lab2-1-create-stack.png)
 
