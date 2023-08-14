@@ -161,6 +161,8 @@ Resources:
     Type: "AWS::Kinesis::Stream"
     Properties:
       Name: !Ref KinesisDataStream
+      StreamModeDetails: 
+        StreamMode: PROVISIONED
       ShardCount: 1
       RetentionPeriodHours: 24
       StreamEncryption:
@@ -230,28 +232,61 @@ Outputs:
 
 ### 资源(Resources):    
 
-#### S3桶：
+#### S3 bucket
 
 定义了两个S3桶 
   - MyS3Bucket作为Kinesis Data Firehose传输的目的地    
   - MyAthenaResultBucket作为存放Athena查询结果的位置    
-IAM角色和策略：
+
+#### IAM Role and Policy
 
 为Kinesis数据流和Firehose创建了相关的IAM角色和策略，以便于访问和管理相关的资源。
 
-Kinesis数据流(MyKDS)：
+#### Kinesis Data Stream - MyKDS
 
 创建一个Kinesis数据流，并为其配置了加密方式、分片数量等属性。
 
-Firehose投递流：
+#### Kinesis Data Firehose Deliver Stream
 
 定义了两个Firehose投递流 
 - MyKDFfromDirectPut 用于直接存放数据到S3
 - MyKDFfromKDS 用于从Kinesis数据流获取数据
 
-输出(Outputs): 
+### 输出(Outputs)
 
 这部分定义了模板的输出，包括
 - 两个Firehose投递流的名称
 - 一个Kinesis数据流的名称
-- 两个S3桶的名称。
+- 两个S3桶的名称
+
+## 重点配置介绍
+
+### KDS
+
+#### 数据保留时间
+**RetentionPeriodHours**: `24 hours by default, up to 8760 hours (365 days)`
+
+#### 容量模式
+**StreamModeDetails.StreamMode**: `ON_DEMAND` | `PROVISIONED`
+
+### KDF
+
+#### 目标设置
+**S3DestinationConfiguration**
+**ExtendedS3DestinationConfiguration**
+**RedshiftDestinationConfiguration**
+**AmazonOpenSearchServerlessDestinationConfiguration**
+**AmazonopensearchserviceDestinationConfiguration**
+**ElasticsearchDestinationConfiguration**
+**SplunkDestinationConfiguration**
+**HttpEndpointDestinationConfiguration**
+
+#### 流的类型
+**DeliveryStreamType**: `DirectPut` | `KinesisStreamAsSource`
+如果类型为`KinesisStreamAsSource`则需要指定*KinesisStreamSourceConfiguration*
+
+#### 数据转换
+**S3DestinationConfiguration.ProcessingConfiguration**
+
+#### 格式转换
+**S3DestinationConfiguration.DataFormatConversionConfiguration**

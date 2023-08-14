@@ -17,8 +17,13 @@ menu:
 ### 架构
 ![图片描述：架构](/lab2-1-architecture.png)
 
+### 涉及的服务
+
 #### Amazon Kinesis Data Firehose
 Amazon Kinesis Data Firehose是将流数据可靠地加载到数据湖、数据存储和分析服务中的最简单方法。它可以捕获、转换并将流数据传输到Amazon S3、Amazon Redshift、Amazon OpenSearch Service（Amazon Elasticsearch Service的后续产品）、通用HTTP端点以及Datadog、New Relic、MongoDB和Splunk等服务提供商。这是一个完全托管的服务，可以自动扩展以匹配您数据的吞吐量，并且不需要持续的管理。它还可以在加载之前对您的数据流进行批处理、压缩、转换和加密，从而最小化存储使用量并增加安全性。
+
+#### Amazon Kinesis Data Stream
+Amazon Kinesis Data Stream是一种强大的实时数据流处理服务。它可以持续捕获、存储和处理大量数据流，如日志文件、社交媒体、市场数据喂养等。Kinesis Data Stream可以处理任何量级的流数据，并且可以从源实时处理数据，这对于实时分析、实时仪表板、IoT设备数据处理等场景非常有用。此外，Kinesis Data Stream还提供了强大的安全性、可用性和耐久性保证，使其成为处理实时大数据的理想选择。
 
 #### Amazon S3
 Amazon S3（Amazon Simple Storage Service）是一个对象存储服务，提供业界领先的可扩展性、数据可用性、安全性和性能。这意味着所有规模和行业的客户都可以使用它存储和保护任何数量的数据，用于各种用例，如数据湖、网站、云原生应用、备份、归档、机器学习和分析。Amazon S3设计为99.999999999%（11个9）的耐久性，并为全球数百万客户存储数据。
