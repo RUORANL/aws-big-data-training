@@ -74,65 +74,7 @@ Parameters:
     Default: 32
     AllowedValues:
       - 32
-      - 40
-      - 48
-      - 56
-      - 64
-      - 72
-      - 80
-      - 88
-      - 96
-      - 104
-      - 112
-      - 120
       - 128
-      - 136
-      - 144
-      - 152
-      - 160
-      - 168
-      - 176
-      - 184
-      - 192
-      - 200
-      - 208
-      - 216
-      - 224
-      - 232
-      - 240
-      - 248
-      - 256
-      - 264
-      - 272
-      - 280
-      - 288
-      - 296
-      - 304
-      - 312
-      - 320
-      - 328
-      - 336
-      - 344
-      - 352
-      - 360
-      - 368
-      - 376
-      - 384
-      - 392
-      - 400
-      - 408
-      - 416
-      - 424
-      - 432
-      - 440
-      - 448
-      - 456
-      - 464
-      - 472
-      - 480
-      - 488
-      - 496
-      - 504
       - 512
   PortNumber:
     Description: >-
@@ -376,7 +318,7 @@ Resources:
       ClusterIdentifier: redshift-provisioned
       ClusterSubnetGroupName:
         Ref: RedshiftProvisionedSubnetGroup
-      IamRoles: !GetAtt RedshiftRole.Arn
+      IamRoles: - !GetAtt RedshiftRole.Arn
       Encrypted: true
       PubliclyAccessible: true
       VpcSecurityGroupIds:
@@ -443,3 +385,37 @@ Outputs:
               - Workgroup.Endpoint.Address
           - '5439'
 ```
+
+这是一个相对复杂的 AWS CloudFormation 模板，主要用于部署 Amazon Redshift 以及相关的 AWS 资源。以下是对模板的主要组成部分的概述：
+
+1. **Parameters**: 
+    - 允许用户在部署模板时输入或选择一些值。例如，数据库名称、管理员用户名和密码、Redshift Serverless 的基础 RPU、端口号等。
+
+2. **Metadata**:
+    - 定义了 CloudFormation 控制台中的界面布局。这允许开发者为参数提供一个更友好的用户界面。
+
+3. **Resources**:
+    - 最核心的部分，定义了应该创建的 AWS 资源。资源包括但不限于：
+        - **IAM 角色 (RedshiftRole)**: 允许 Redshift 和其他 AWS 服务进行相应的操作。
+        - **VPC (VPC)**: 虚拟私有云，用于创建隔离的网络环境。
+        - **子网 (Subnet1, Subnet2, Subnet3, Subnet4)**: 在 VPC 内创建的子网，每个子网在不同的可用区。
+        - **安全组 (SecurityGroup)**: 用于限制进出 VPC 的流量。
+        - **安全组入口 (SecurityGroupIngress)**: 允许特定的 IP 地址范围访问 Redshift。
+        - **Internet 网关 (InternetGateway)**: 允许 VPC 内的资源访问互联网。
+        - **路由表 (RouteTable)**: 定义了如何路由 VPC 内的流量。
+        - **Redshift Serverless Namespace 和 Workgroup**：部署一个 Redshift Serverless 工作组。
+        - **RedshiftProvisioned**：部署一个提供的 Redshift 集群。
+        - **S3 存储桶 (S3Bucket)**: 用于存储数据。
+
+4. **Outputs**:
+    - 创建的资源的输出值。这些值可以用于从 CloudFormation 控制台或 API 获取关于创建的资源的信息。
+
+以下是此模板的总结：
+
+- 创建一个 VPC、4 个子网、安全组和 Internet 网关。
+- 创建一个 Redshift Serverless 命名空间和工作组。
+- 创建一个 Redshift 集群。
+- 创建一个 S3 存储桶。
+- 输出一些与创建的资源相关的信息。
+
+最后，这个模板看起来是为了部署一个 Redshift 解决方案（包括 Serverless 和提供的 Redshift），并确保它可以安全地运行在一个 VPC 内，同时也可以访问其他 AWS 服务。
