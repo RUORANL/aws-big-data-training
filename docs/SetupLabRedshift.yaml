@@ -275,7 +275,8 @@ Resources:
       ClusterIdentifier: redshift-provisioned
       ClusterSubnetGroupName:
         Ref: RedshiftProvisionedSubnetGroup
-      IamRoles: - !GetAtt RedshiftRole.Arn
+      IamRoles: 
+        - !GetAtt RedshiftRole.Arn
       Encrypted: true
       PubliclyAccessible: true
       VpcSecurityGroupIds:
