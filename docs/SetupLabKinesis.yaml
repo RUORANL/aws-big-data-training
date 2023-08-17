@@ -21,6 +21,7 @@ Parameters:
   Owner:
     Description: The owner of this resource
     Type: String
+    Default: 'QuickLearner'
 
 Resources:
   MyS3Bucket:
@@ -165,6 +166,8 @@ Resources:
     Type: "AWS::Kinesis::Stream"
     Properties:
       Name: !Ref KinesisDataStream
+      StreamModeDetails: 
+        StreamMode: PROVISIONED
       ShardCount: 1
       RetentionPeriodHours: 24
       StreamEncryption:

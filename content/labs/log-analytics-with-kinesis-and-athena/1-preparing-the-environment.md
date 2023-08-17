@@ -62,17 +62,18 @@ Parameters:
   Owner:
     Description: The owner of this resource
     Type: String
+    Default: 'QuickLearner'
 
 Resources:
   MyS3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub 'access-logs-tsv-${AWS::AccountId}'
+      BucketName: !Sub 'access-logs-data-${AWS::AccountId}'
       AccessControl: Private
   MyAthenaResultBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub 'access-logs-tsv-${AWS::AccountId}'
+      BucketName: !Sub 'access-logs-result-${AWS::AccountId}'
       AccessControl: Private
   KinesisDataStreamRole:
     Type: "AWS::IAM::Role"
