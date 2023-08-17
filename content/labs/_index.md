@@ -7,7 +7,7 @@ identifier: labs
 menu:
   after:
     weight: 10
-    
+      parent: /
 ---
 ## AWS大数据分析和处理动手实验
 
