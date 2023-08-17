@@ -3,6 +3,10 @@ title: "AWS大数据分析和处理动手实验"
 date: 2023-08-12T20:08:25+08:00
 draft: false
 identifier: labs
+
+menu:
+  after:
+    weight: 10
     
 ---
 ## AWS大数据分析和处理动手实验
