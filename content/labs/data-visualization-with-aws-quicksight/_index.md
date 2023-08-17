@@ -10,3 +10,8 @@ menu:
     identifier: data-visualization-with-aws-quicksight
 ---
 ## 使用Amazon QuickSight进行数据可视化
+
+### 架构图
+
+![图片描述：架构图](/quicksight.png)
+

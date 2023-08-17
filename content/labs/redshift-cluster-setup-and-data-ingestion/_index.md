@@ -42,6 +42,8 @@ Amazon Redshift 是 Amazon Web Services（AWS）提供的一种完全托管的�
 
 ### 架构图
 
+![图片描述：架构图](/LabRedshift.jpg)
+
 ### 实验说明
 
 本实验旨在指导您部署Amazon Redshift集群、配置客户端工具，并向Redshift加载数据。
