@@ -12,12 +12,24 @@ menu:
 
 ## 实验2-1 - 上传测试数据到S3
 
-Follow the Amazon Simple Storage Service documentation page to create an S3 bucket
-Select your new S3 bucket and click the Create folder button, enter cur for your folder name, and click Create folder
-Click on your new cur folder to enter it, and follow the same process to create further folders until you have a folder structure which resembles (bucket name)/cur/WorkshopCUR/WorkshopCUR/year=2018
-Then create three further folders within the year=2018 folder (month=10, month=11, month=12)
-Download the three parquet files below
-October 2018 Usage
-November 2018 Usage
-December 2018 Usage
-Upload each months file into the corresponding folder, (so upload October’s parquet file to (bucket name)/cur/WorkshopCUR/WorkshopCUR/year=2018/month=10/
+### 1. 从S3下载测试数据
+[October 2018 Usage](https://big-data-training-cfn-templates.s3.amazonaws.com/Oct2018-WorkshopCUR-00001.snappy.parquet)
+[November 2018 Usage](https://big-data-training-cfn-templates.s3.amazonaws.com/Nov2018-WorkshopCUR-00001.snappy.parquet)
+[December 2018 Usage](https://big-data-training-cfn-templates.s3.amazonaws.com/Dec2018-WorkshopCUR-00001.snappy.parquet)
+
+### 2. 创建文件夹结构
+我们会使用在使用KinesisLab中创建的billing-data-bucket来存放测试数据。
+
+导航到S3控制台并找到对应的存储桶，在存储桶中创建以下目录结构
+`(bucket name)/cur/WorkshopCUR/WorkshopCUR/year=2018`
+例如,
+
+```
+billing-data-xxxxxxxxxxxx/cur/WorkshopCUR/WorkshopCUR/year=2018
+```
+### 3. 上传测试数据
+
+使用S3命令行或者图形界面将三个测试文件上传到对应的目录里。
+例如，
+将`October 2018 Usage` parquet 文件上传到(bucket name)/cur/WorkshopCUR/WorkshopCUR/year=2018/month=10/
+

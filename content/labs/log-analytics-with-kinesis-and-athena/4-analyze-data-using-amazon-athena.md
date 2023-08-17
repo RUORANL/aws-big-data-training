@@ -68,7 +68,7 @@ Amazon Athena是一个交互式查询服务，可以轻松地使用标准SQL直�
   OUTPUTFORMAT
     'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
   LOCATION
-    's3://access-logs-tsv-xxxxxxxxxxxxx/access-logs-data-stream-tsv/';
+    's3://access-logs-592336536196/access-logs-data-stream-tsv/';
    ```
 
 

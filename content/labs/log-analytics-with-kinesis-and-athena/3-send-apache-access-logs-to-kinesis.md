@@ -18,18 +18,13 @@ menu:
 已经成功部署实验资源和Kinesis Data Generator。
 
 ## 登录到Kinesis Data Generator
-Kinesis Data Generator (KDG)已在设置过程中配置到您的帐户上。我们需要检索应用程序的链接和凭据以获得访问权限。通过在AWS控制台顶部的服务搜索框中键入CloudFormation来打开CloudFormation控制台，或点击此链接到CloudFormation控制台。一旦打开，如果您在自己的帐户中工作，选择firehose-immersion-day，或者如果您在AWS活动中，选择以mod-开头的堆栈名称。
-
-> CloudFormation 控制台
+Kinesis Data Generator (KDG)已在设置过程中配置到您的帐户上。我们需要检索应用程序的链接和凭据以获得访问权限。通过在AWS控制台顶部的服务搜索框中键入CloudFormation来打开CloudFormation控制台，或点击此链接到CloudFormation控制台。
 
 在堆栈详情中，点击输出选项卡。复制KinesisDataGeneratorUrl、UserName和Password的值列，并为下一步保留它们。
-
-> 堆栈输出
 
 使用上一步中的用户名和密码登录到KDG。选择您的区域，并确认您可以看到您上面创建的Kinesis Firehose传输流和Kinesis数据流。
 
 ![图片描述：KDG 登录](/lab2-1-kdg-login.png)
-
 
 我们将使用参数化模板定义模拟数据的结构。将以下模板复制并粘贴到模板选项卡中：  
 ```

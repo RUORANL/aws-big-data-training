@@ -26,13 +26,52 @@ Resources:
   MyS3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub 'access-logs-tsv-${AWS::AccountId}'
+      BucketName: !Sub 'access-logs-${AWS::AccountId}'
       AccessControl: Private
   MyAthenaResultBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub 'access-logs-tsv-${AWS::AccountId}'
+      BucketName: !Sub 'athena-result-${AWS::AccountId}'
       AccessControl: Private
+  MyBillingReportBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'billing-data-${AWS::AccountId}'
+      AccessControl: Private
+  KinesisDataFirehoseLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: KinesisDataFirehoseTransformationLambda
+      Handler: lambda_function.lambda_handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        S3Bucket: 'big-data-training-cfn-templates'
+        S3Key: 'DataTransformLambda.zip'
+      Runtime: python3.8
+      Timeout: 300
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+      Policies:
+      - PolicyName: AdminPolicy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - '*'
+            Resource: '*'
+
   KinesisDataStreamRole:
     Type: "AWS::IAM::Role"
     Properties:
@@ -95,6 +134,7 @@ Resources:
           Condition:
              StringEquals:
                "sts:ExternalId": !Ref "AWS::AccountId"
+        
 
   FirehoseDeliveryPolicy:
    Type: AWS::IAM::Policy
@@ -114,6 +154,11 @@ Resources:
             Resource:
               - !Sub 'arn:aws:s3:::${MyS3Bucket}'
               - !Sub 'arn:aws:s3:::${MyS3Bucket}*'
+          - Effect: Allow
+            Action:
+              - 'lambda:InvokeFunction'
+              - 'lambda:GetFunctionConfiguration' 
+            Resource: '*'
       Roles:
         - !Ref FirehoseDeliveryRole
   MyKDS:
@@ -147,6 +192,13 @@ Resources:
        CompressionFormat: UNCOMPRESSED
        Prefix: access-logs-direct-put-tsv/
        RoleARN: !GetAtt FirehoseDeliveryRole.Arn
+       ProcessingConfiguration:
+         Enabled: true
+         Processors:
+           - Type: Lambda
+             Parameters:
+               - ParameterName: LambdaArn
+                 ParameterValue: !GetAtt KinesisDataFirehoseLambda.Arn
      DeliveryStreamName: !Sub '${KinesisFirehoseDeliveryStream}-direct-put'
      DeliveryStreamType: 'DirectPut'
 
@@ -178,6 +230,12 @@ Outputs:
    KinesisDataStream:
      Description: Kinesis Data Stream Name
      Value: !Ref KinesisDataStream
-   S3bucketname: 
+   S3StreamDataBucket: 
      Value: !Ref MyS3Bucket
-     Description: Name of the bucket created
+     Description: Name of the data bucket created
+   S3AthenaQueryResultBucket: 
+     Value: !Ref MyAthenaResultBucket
+     Description: Name of the athena bucket created
+   S3BillingDataBucket: 
+     Value: !Ref MyBillingReportBucket
+     Description: Name of the billing bucket created
